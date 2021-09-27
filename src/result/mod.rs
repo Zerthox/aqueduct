@@ -5,6 +5,28 @@ use crate::pure::{Function, Pipe};
 pub use chain::TryChain;
 pub use wrapper::TryWrapper;
 
+/// Interface for a single pipeline element which may fail.
+///
+/// If your pipe cannot fail, use [`Pipe`] instead.
+///
+/// # Examples
+///
+/// ```
+/// use std::io;
+/// use aqueduct::TryPipe;
+///
+/// struct Foo;
+///
+/// impl TryPipe for Foo {
+///     type Input = i32;
+///     type Output = f64;
+///     type Error = io::Error;
+///
+///     fn run(&mut self, input: i32) -> Result<f64, io::Error> {
+///         Err(io::Error::new(io::ErrorKind::Other, "oops"))
+///     }
+/// }
+/// ```
 pub trait TryPipe
 where
     Self: Sized,

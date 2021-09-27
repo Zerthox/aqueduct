@@ -4,6 +4,25 @@ mod function;
 pub use chain::Chain;
 pub use function::Function;
 
+/// Interface for a single simple element in the pipeline.
+///
+/// If your pipe may fail, you can use [`TryPipe`](crate::TryPipe) instead.
+///
+/// # Examples
+/// ```
+/// use aqueduct::Pipe;
+///
+/// struct Foo;
+///
+/// impl Pipe for Foo {
+///    type Input = i32;
+///    type Output = f64;
+///
+///    fn run(&mut self, input: i32) -> f64 {
+///        todo!("take input & generate output")
+///    }
+/// }
+/// ```
 pub trait Pipe
 where
     Self: Sized,

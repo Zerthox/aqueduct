@@ -1,5 +1,6 @@
 use crate::{pure::tests::Doubler, TryPipe};
 
+#[derive(Debug, Default)]
 struct Divider;
 
 impl TryPipe for Divider {
@@ -13,6 +14,7 @@ impl TryPipe for Divider {
     }
 }
 
+#[derive(Debug, Default)]
 struct AlwaysError;
 
 impl TryPipe for AlwaysError {
