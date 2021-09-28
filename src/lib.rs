@@ -28,8 +28,8 @@
 //! let result = pipeline.produce(input);
 //! ```
 
-mod pure;
-mod result;
+pub mod pure;
+pub mod result;
 
 pub use pure::Pipe;
 pub use result::TryPipe;

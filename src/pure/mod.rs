@@ -1,8 +1,11 @@
 mod connect;
+mod forward;
 mod function;
 
 use crate::result::TryWrapper;
+
 pub use connect::Connector;
+pub use forward::Forward;
 pub use function::Function;
 
 /// Interface for a single simple element in the pipeline.
