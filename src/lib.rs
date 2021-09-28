@@ -13,19 +13,19 @@
 //! # impl Pipe for Foo {
 //! #     type Input = i32;
 //! #     type Output = i32;
-//! #     fn run(&mut self, input: i32) -> i32 { input }
+//! #     fn produce(&mut self, input: i32) -> i32 { input }
 //! # }
 //! #
 //! # type Bar = Foo;
 //! # type Baz = Foo;
 //! #
 //! let mut pipeline = Foo::new()
-//!     .chain(Bar::new())
-//!     .chain_default::<Baz>()
+//!     .pipe(Bar::new())
+//!     .pipe_default::<Baz>()
 //!     .map(|input| input * 2);
 //!
 //! let input = 123;
-//! let result = pipeline.run(input);
+//! let result = pipeline.produce(input);
 //! ```
 
 mod pure;

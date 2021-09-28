@@ -1,7 +1,7 @@
 use super::Pipe;
 
 #[derive(Debug)]
-pub struct Chain<Prev, Next>
+pub struct Connector<Prev, Next>
 where
     Prev: Pipe,
     Next: Pipe<Input = Prev::Output>,
@@ -10,7 +10,7 @@ where
     next: Next,
 }
 
-impl<Prev, Next> Chain<Prev, Next>
+impl<Prev, Next> Connector<Prev, Next>
 where
     Prev: Pipe,
     Next: Pipe<Input = Prev::Output>,
@@ -20,7 +20,7 @@ where
     }
 }
 
-impl<Prev, Next> Pipe for Chain<Prev, Next>
+impl<Prev, Next> Pipe for Connector<Prev, Next>
 where
     Prev: Pipe,
     Next: Pipe<Input = Prev::Output>,
@@ -28,8 +28,8 @@ where
     type Input = Prev::Input;
     type Output = Next::Output;
 
-    fn run(&mut self, input: Self::Input) -> Self::Output {
-        let input = self.previous.run(input);
-        self.next.run(input)
+    fn produce(&mut self, input: Self::Input) -> Self::Output {
+        let input = self.previous.produce(input);
+        self.next.produce(input)
     }
 }

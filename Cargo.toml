@@ -1,6 +1,6 @@
 [package]
 name = "aqueduct"
-version = "0.1.1"
+version = "0.2.0"
 edition = "2018"
 authors = ["Zerthox <zerthox@gmail.com>"]
 description = "Pipeline interface for chaining operations"

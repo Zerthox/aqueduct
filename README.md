@@ -16,7 +16,7 @@ impl Pipe for Foo {
     type Input = i32;
     type Output = f64;
 
-    fn run(&mut self, input: i32) -> f64 {
+    fn produce(&mut self, input: i32) -> f64 {
         todo!("take input & generate output")
     }
 }
@@ -31,7 +31,7 @@ impl TryPipe for Bar {
     type Output = f64;
     type Error = io::Error;
 
-    fn run(&mut self, input: i32) -> Result<f64, io::Error> {
+    fn produce(&mut self, input: i32) -> Result<f64, io::Error> {
         Err(io::Error::new(io::ErrorKind::Other, "oops"))
     }
 }
@@ -40,10 +40,10 @@ impl TryPipe for Bar {
 Pipes and/or functions can then be connected into a pipeline and executed with an input.
 ```rust
 let mut pipeline = Foo::new()
-    .chain(Bar::new())
-    .chain_default::<Baz>()
+    .pipe(Bar::new())
+    .pipe_default::<Baz>()
     .map(|input| input * 2);
 
 let input = 123;
-let result = pipeline.run(input);
+let result = pipeline.produce(input);
 ```

@@ -8,7 +8,7 @@ impl TryPipe for Divider {
     type Output = i32;
     type Error = &'static str;
 
-    fn run(&mut self, input: Self::Input) -> Result<Self::Output, Self::Error> {
+    fn produce(&mut self, input: Self::Input) -> Result<Self::Output, Self::Error> {
         let (lhs, rhs) = input;
         lhs.checked_div(rhs).ok_or("divide by zero")
     }
@@ -22,7 +22,7 @@ impl TryPipe for AlwaysError {
     type Output = i32;
     type Error = &'static str;
 
-    fn run(&mut self, _input: Self::Input) -> Result<Self::Output, Self::Error> {
+    fn produce(&mut self, _input: Self::Input) -> Result<Self::Output, Self::Error> {
         Err("error occured")
     }
 }
@@ -30,27 +30,27 @@ impl TryPipe for AlwaysError {
 #[test]
 fn single() {
     let mut pipeline = Divider;
-    assert_eq!(pipeline.run((12, 2)), Ok(6));
-    assert_eq!(pipeline.run((12, 0)), Err("divide by zero"));
+    assert_eq!(pipeline.produce((12, 2)), Ok(6));
+    assert_eq!(pipeline.produce((12, 0)), Err("divide by zero"));
 }
 
 #[test]
 fn chained() {
-    let mut pipeline = Divider.chain(AlwaysError);
-    assert_eq!(pipeline.run((12, 0)), Err("divide by zero"));
-    assert_eq!(pipeline.run((12, 2)), Err("error occured"));
+    let mut pipeline = Divider.pipe(AlwaysError);
+    assert_eq!(pipeline.produce((12, 0)), Err("divide by zero"));
+    assert_eq!(pipeline.produce((12, 2)), Err("error occured"));
 }
 
 #[test]
 fn pure() {
-    let mut pipeline = Divider.chain_pure(Doubler);
-    assert_eq!(pipeline.run((12, 2)), Ok(12));
-    assert_eq!(pipeline.run((12, 0)), Err("divide by zero"));
+    let mut pipeline = Divider.pipe_pure(Doubler);
+    assert_eq!(pipeline.produce((12, 2)), Ok(12));
+    assert_eq!(pipeline.produce((12, 0)), Err("divide by zero"));
 }
 
 #[test]
 fn function() {
     let mut pipeline = Divider.map(|input| input + 2);
-    assert_eq!(pipeline.run((12, 2)), Ok(8));
-    assert_eq!(pipeline.run((12, 0)), Err("divide by zero"));
+    assert_eq!(pipeline.produce((12, 2)), Ok(8));
+    assert_eq!(pipeline.produce((12, 0)), Err("divide by zero"));
 }

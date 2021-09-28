@@ -7,7 +7,7 @@ impl Pipe for Doubler {
     type Input = i32;
     type Output = i32;
 
-    fn run(&mut self, input: Self::Input) -> Self::Output {
+    fn produce(&mut self, input: Self::Input) -> Self::Output {
         input * 2
     }
 }
@@ -19,7 +19,7 @@ impl Pipe for Tripler {
     type Input = i32;
     type Output = i32;
 
-    fn run(&mut self, input: Self::Input) -> Self::Output {
+    fn produce(&mut self, input: Self::Input) -> Self::Output {
         input * 3
     }
 }
@@ -27,17 +27,17 @@ impl Pipe for Tripler {
 #[test]
 fn single() {
     let mut pipeline = Doubler;
-    assert_eq!(pipeline.run(2), 4);
+    assert_eq!(pipeline.produce(2), 4);
 }
 
 #[test]
 fn chained() {
-    let mut pipeline = Doubler.chain_default::<Tripler>();
-    assert_eq!(pipeline.run(2), 12);
+    let mut pipeline = Doubler.pipe_default::<Tripler>();
+    assert_eq!(pipeline.produce(2), 12);
 }
 
 #[test]
 fn function() {
     let mut pipeline = Tripler.map(|input| input + 1);
-    assert_eq!(pipeline.run(2), 7);
+    assert_eq!(pipeline.produce(2), 7);
 }

@@ -1,8 +1,8 @@
-mod chain;
+mod connect;
 mod function;
 
 use crate::result::TryWrapper;
-pub use chain::Chain;
+pub use connect::Connector;
 pub use function::Function;
 
 /// Interface for a single simple element in the pipeline.
@@ -11,15 +11,15 @@ pub use function::Function;
 ///
 /// # Examples
 /// ```
-/// use aqueduct::Pipe;
-///
-/// struct Foo;
-///
+/// # use aqueduct::Pipe;
+/// #
+/// # struct Foo;
+/// #
 /// impl Pipe for Foo {
 ///    type Input = i32;
 ///    type Output = f64;
 ///
-///    fn run(&mut self, input: i32) -> f64 {
+///    fn produce(&mut self, input: i32) -> f64 {
 ///        todo!("take input & generate output")
 ///    }
 /// }
@@ -31,31 +31,31 @@ where
     type Input;
     type Output;
 
-    fn run(&mut self, input: Self::Input) -> Self::Output;
+    fn produce(&mut self, input: Self::Input) -> Self::Output;
 
     fn as_try<Err>(self) -> TryWrapper<Self, Err> {
         TryWrapper::new(self)
     }
 
-    fn chain<Next>(self, next: Next) -> Chain<Self, Next>
+    fn pipe<Next>(self, next: Next) -> Connector<Self, Next>
     where
         Next: Pipe<Input = Self::Output>,
     {
-        Chain::new(self, next)
+        Connector::new(self, next)
     }
 
-    fn chain_default<Next>(self) -> Chain<Self, Next>
+    fn pipe_default<Next>(self) -> Connector<Self, Next>
     where
         Next: Default + Pipe<Input = Self::Output>,
     {
-        self.chain(Next::default())
+        self.pipe(Next::default())
     }
 
-    fn map<F, O>(self, function: F) -> Chain<Self, Function<F, Self::Output, O>>
+    fn map<F, O>(self, function: F) -> Connector<Self, Function<F, Self::Output, O>>
     where
         F: FnMut(Self::Output) -> O,
     {
-        self.chain(function.into())
+        self.pipe(function.into())
     }
 }
 

@@ -31,7 +31,7 @@ where
     type Output = P::Output;
     type Error = Err;
 
-    fn run(&mut self, input: Self::Input) -> Result<Self::Output, Self::Error> {
-        Ok(self.inner.run(input))
+    fn produce(&mut self, input: Self::Input) -> Result<Self::Output, Self::Error> {
+        Ok(self.inner.produce(input))
     }
 }

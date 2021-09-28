@@ -31,7 +31,7 @@ where
     type Input = I;
     type Output = O;
 
-    fn run(&mut self, input: Self::Input) -> Self::Output {
+    fn produce(&mut self, input: Self::Input) -> Self::Output {
         (self.inner)(input)
     }
 }

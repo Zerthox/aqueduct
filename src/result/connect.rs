@@ -1,7 +1,7 @@
 use super::TryPipe;
 
 #[derive(Debug)]
-pub struct TryChain<Prev, Next>
+pub struct TryConnector<Prev, Next>
 where
     Prev: TryPipe,
     Next: TryPipe<Input = Prev::Output>,
@@ -11,7 +11,7 @@ where
     next: Next,
 }
 
-impl<Prev, Next> TryChain<Prev, Next>
+impl<Prev, Next> TryConnector<Prev, Next>
 where
     Prev: TryPipe,
     Next: TryPipe<Input = Prev::Output>,
@@ -22,7 +22,7 @@ where
     }
 }
 
-impl<Prev, Next> TryPipe for TryChain<Prev, Next>
+impl<Prev, Next> TryPipe for TryConnector<Prev, Next>
 where
     Prev: TryPipe,
     Next: TryPipe<Input = Prev::Output>,
@@ -32,8 +32,8 @@ where
     type Output = Next::Output;
     type Error = Next::Error;
 
-    fn run(&mut self, input: Self::Input) -> Result<Self::Output, Self::Error> {
-        let input = self.previous.run(input)?;
-        self.next.run(input)
+    fn produce(&mut self, input: Self::Input) -> Result<Self::Output, Self::Error> {
+        let input = self.previous.produce(input)?;
+        self.next.produce(input)
     }
 }
