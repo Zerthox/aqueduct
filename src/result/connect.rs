@@ -1,6 +1,6 @@
 use super::TryPipe;
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Default)]
 pub struct TryConnector<Prev, Next>
 where
     Prev: TryPipe,

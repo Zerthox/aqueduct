@@ -1,7 +1,7 @@
 use crate::pure::Pipe;
 use std::marker::PhantomData;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Function<F, I, O>
 where
     F: FnMut(I) -> O,

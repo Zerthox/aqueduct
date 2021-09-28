@@ -1,6 +1,6 @@
 use super::Pipe;
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Default)]
 pub struct Connector<Prev, Next>
 where
     Prev: Pipe,

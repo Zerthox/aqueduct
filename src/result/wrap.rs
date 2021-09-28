@@ -2,7 +2,7 @@ use super::TryPipe;
 use crate::pure::Pipe;
 use std::marker::PhantomData;
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Default)]
 pub struct TryWrapper<P, Err>
 where
     P: Pipe,
