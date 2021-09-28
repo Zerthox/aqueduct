@@ -35,3 +35,14 @@ where
         (self.inner)(input)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn simple() {
+        let mut pipe = Function::from(|input| input * 4);
+        assert_eq!(pipe.produce(1), 4);
+    }
+}

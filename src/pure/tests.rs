@@ -1,4 +1,4 @@
-use crate::pure::Pipe;
+use super::Pipe;
 
 #[derive(Debug, Default)]
 pub struct Doubler;
@@ -26,18 +26,18 @@ impl Pipe for Tripler {
 
 #[test]
 fn single() {
-    let mut pipeline = Doubler;
-    assert_eq!(pipeline.produce(2), 4);
+    let mut pipe = Doubler;
+    assert_eq!(pipe.produce(2), 4);
 }
 
 #[test]
-fn chained() {
-    let mut pipeline = Doubler.pipe_default::<Tripler>();
-    assert_eq!(pipeline.produce(2), 12);
+fn connect() {
+    let mut pipe = Doubler.pipe_default::<Tripler>();
+    assert_eq!(pipe.produce(2), 12);
 }
 
 #[test]
-fn function() {
-    let mut pipeline = Tripler.map(|input| input + 1);
-    assert_eq!(pipeline.produce(2), 7);
+fn map() {
+    let mut pipe = Tripler.map(|input| input + 1);
+    assert_eq!(pipe.produce(2), 7);
 }

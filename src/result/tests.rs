@@ -1,4 +1,5 @@
-use crate::{pure::tests::Doubler, TryPipe};
+use super::TryPipe;
+use crate::pure::tests::Doubler;
 
 #[derive(Debug, Default)]
 struct Divider;
@@ -29,28 +30,28 @@ impl TryPipe for AlwaysError {
 
 #[test]
 fn single() {
-    let mut pipeline = Divider;
-    assert_eq!(pipeline.produce((12, 2)), Ok(6));
-    assert_eq!(pipeline.produce((12, 0)), Err("divide by zero"));
+    let mut pipe = Divider;
+    assert_eq!(pipe.produce((12, 2)), Ok(6));
+    assert_eq!(pipe.produce((12, 0)), Err("divide by zero"));
 }
 
 #[test]
-fn chained() {
-    let mut pipeline = Divider.pipe(AlwaysError);
-    assert_eq!(pipeline.produce((12, 0)), Err("divide by zero"));
-    assert_eq!(pipeline.produce((12, 2)), Err("error occured"));
+fn connect() {
+    let mut pipe = Divider.pipe(AlwaysError);
+    assert_eq!(pipe.produce((12, 0)), Err("divide by zero"));
+    assert_eq!(pipe.produce((12, 2)), Err("error occured"));
 }
 
 #[test]
-fn pure() {
-    let mut pipeline = Divider.pipe_pure(Doubler);
-    assert_eq!(pipeline.produce((12, 2)), Ok(12));
-    assert_eq!(pipeline.produce((12, 0)), Err("divide by zero"));
+fn connect_pure() {
+    let mut pipe = Divider.pipe_pure(Doubler);
+    assert_eq!(pipe.produce((12, 2)), Ok(12));
+    assert_eq!(pipe.produce((12, 0)), Err("divide by zero"));
 }
 
 #[test]
-fn function() {
-    let mut pipeline = Divider.map(|input| input + 2);
-    assert_eq!(pipeline.produce((12, 2)), Ok(8));
-    assert_eq!(pipeline.produce((12, 0)), Err("divide by zero"));
+fn map() {
+    let mut pipe = Divider.map(|input| input + 2);
+    assert_eq!(pipe.produce((12, 2)), Ok(8));
+    assert_eq!(pipe.produce((12, 0)), Err("divide by zero"));
 }

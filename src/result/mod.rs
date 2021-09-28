@@ -2,6 +2,7 @@ mod connect;
 mod wrap;
 
 use crate::pure::{Function, Pipe};
+
 pub use connect::TryConnector;
 pub use wrap::TryWrapper;
 
