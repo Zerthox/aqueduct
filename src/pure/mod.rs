@@ -1,6 +1,7 @@
 mod chain;
 mod function;
 
+use crate::result::TryWrapper;
 pub use chain::Chain;
 pub use function::Function;
 
@@ -31,6 +32,10 @@ where
     type Output;
 
     fn run(&mut self, input: Self::Input) -> Self::Output;
+
+    fn as_try<Err>(self) -> TryWrapper<Self, Err> {
+        TryWrapper::new(self)
+    }
 
     fn chain<Next>(self, next: Next) -> Chain<Self, Next>
     where
