@@ -2,6 +2,7 @@ use super::TryPipe;
 use crate::pure::Pipe;
 use std::marker::PhantomData;
 
+/// Wrapper around a [`Pipe`], turning it into a [`TryPipe`].
 #[derive(Debug, Clone, Default)]
 pub struct TryWrapper<P, Err>
 where
@@ -15,6 +16,7 @@ impl<P, Err> TryWrapper<P, Err>
 where
     P: Pipe,
 {
+    /// Creates a new wrapper.
     pub fn new(pipe: P) -> Self {
         Self {
             inner: pipe,

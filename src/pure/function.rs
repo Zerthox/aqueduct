@@ -1,6 +1,10 @@
 use crate::pure::Pipe;
 use std::marker::PhantomData;
 
+/// Wrapper around a function, turning it into a [`Pipe`].
+///
+/// Created by converting from a function.
+/// Any function implementing [`FnMut`] is accepted.
 #[derive(Debug, Clone)]
 pub struct Function<F, I, O>
 where

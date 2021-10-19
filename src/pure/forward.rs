@@ -1,11 +1,12 @@
 use crate::Pipe;
 use std::marker::PhantomData;
 
-/// Simple generic pipe forwarding its input.
+/// Simple generic [`Pipe`] forwarding its input.
 #[derive(Debug, Clone, Default)]
 pub struct Forwarder<Data>(PhantomData<Data>);
 
 impl<Data> Forwarder<Data> {
+    /// Creates a new forwarder.
     pub fn new() -> Self {
         Self(PhantomData)
     }

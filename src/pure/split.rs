@@ -1,5 +1,6 @@
 use crate::Pipe;
 
+/// Generic [`Pipe`] splitting its input into two other pipes.
 #[derive(Debug, Clone, Default)]
 pub struct Splitter<Left, Right>
 where
@@ -15,6 +16,7 @@ where
     Left: Pipe,
     Right: Pipe,
 {
+    /// Creates a new splitter.
     pub fn new(left: Left, right: Right) -> Self {
         Self { left, right }
     }

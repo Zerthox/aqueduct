@@ -1,5 +1,8 @@
 use super::TryPipe;
 
+/// Connection between two [`TryPipe`] elements.
+///
+/// If the first pipe errors, the second pipe will not produce and the error will be forwarded.
 #[derive(Debug, Clone, Default)]
 pub struct TryConnector<Prev, Next>
 where
@@ -17,6 +20,7 @@ where
     Next: TryPipe<Input = Prev::Output>,
     Next::Error: From<Prev::Error>,
 {
+    /// Creates a new connector.
     pub fn new(previous: Prev, next: Next) -> Self {
         Self { previous, next }
     }

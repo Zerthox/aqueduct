@@ -1,5 +1,6 @@
 use super::Pipe;
 
+/// Connection between two [`Pipe`] elements.
 #[derive(Debug, Clone, Default)]
 pub struct Connector<Prev, Next>
 where
@@ -15,6 +16,7 @@ where
     Prev: Pipe,
     Next: Pipe<Input = Prev::Output>,
 {
+    /// Creates a new connector.
     pub fn new(previous: Prev, next: Next) -> Self {
         Self { previous, next }
     }
